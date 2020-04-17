@@ -1,0 +1,86 @@
+<div class="box-wrapper">
+  <div class="box-header">
+    <h1 class="mat-h1">Könyvek</h1>
+  </div>
+
+  <div style="overflow-y: hidden;" class="mat-elevation-z8 box-content">
+    <div style="height: 100%;">
+      <div class="box-wrapper mat-elevation-z8">
+        <div class="box-header header-padding">
+
+          <mat-label>Könyvek mutatása az alábbi státusszal:</mat-label>
+          <mat-radio-group class="example-radio-group" (change)="filterChanged($event)">
+            <mat-radio-button class="example-radio-button" [value]="null">MIND</mat-radio-button>
+            <mat-radio-button class="example-radio-button" *ngFor="let opt of BOOK_STATUSES" [value]="opt">{{opt}}</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <div class="box-content box-wrapper" style="overflow-y: scroll;">
+          <table mat-table class="full-width-table" aria-label="Elements" [dataSource]="dataSource">
+
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef>Id<th>
+              <td mat-cell *matCellDef="let row">
+                <div class="cell-padding">
+                  {{row.id}}
+                </div>
+              <td>
+            </ng-container>
+
+            <ng-container matColumnDef="recordIdentifier">
+              <th mat-header-cell *matHeaderCellDef>Könyvtári azonosító<th>
+              <td mat-cell *matCellDef="let row">
+                <div class="cell-padding">
+                  {{row.recordIdentifier}}
+                </div>
+              <td>
+            </ng-container>
+
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef>Cím<th>
+              <td mat-cell *matCellDef="let row">
+                <div class="cell-padding">
+                  {{row.title}}
+                </div>
+              <td>
+            </ng-container>
+
+            <ng-container matColumnDef="author">
+              <th mat-header-cell *matHeaderCellDef>Szerző<th>
+              <td mat-cell *matCellDef="let row">
+                <div class="cell-padding">
+                  {{row.author}}
+                </div>
+              <td>
+            </ng-container>
+
+            <ng-container matColumnDef="releaseDate">
+              <th mat-header-cell *matHeaderCellDef>Kiadás éve<th>
+              <td mat-cell *matCellDef="let row">{{row.releaseDate | date: 'shortDate'}}<td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Státusz<th>
+              <td mat-cell *matCellDef="let row">
+                <div class="cell-padding" style="position: relative">
+                  <mat-button-toggle-group name="status" [value]="row.status" [disabled]="row.loading" (change)="statusChangedForBook(row, $event)">
+                    <mat-button-toggle *ngFor="let opt of BOOK_STATUSES" [value]="opt">{{opt}}</mat-button-toggle>
+                  </mat-button-toggle-group>
+                  <div *ngIf="row.loading">
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                  </div>
+                </div>
+              <td>
+            </ng-container>
+
+            <ng-container *matRowDef="let row; columns: ['id', 'recordIdentifier', 'title', 'author', 'releaseDate', 'status'];">
+              <tr mat-row></tr>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="['id', 'recordIdentifier', 'title', 'author', 'releaseDate', 'status']; sticky: true"></tr>
+            
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
